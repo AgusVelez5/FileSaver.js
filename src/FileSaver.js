@@ -17,11 +17,15 @@ var _global = typeof window === 'object' && window.window === window
   : this
 
 function bom (blob, opts) {
-  if (typeof opts === 'undefined') opts = { autoBom: false }
+  if (typeof opts === 'undefined') opts = { autoBom: false, cors: true }
   else if (typeof opts !== 'object') {
     console.warn('Deprecated: Expected third argument to be a object')
     opts = { autoBom: !opts }
   }
+  if (typeof opts.autoBom === 'undefined')
+    opts.autoBom = false
+  if (typeof opts.cors === 'undefined')
+    opts.cors = true
 
   // prepend BOM for UTF-8 XML and text/* types (including HTML)
   // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
@@ -93,9 +97,12 @@ var saveAs = _global.saveAs || (
       // Support regular links
       a.href = blob
       if (a.origin !== location.origin) {
-        corsEnabled(a.href)
-          ? download(blob, name, opts)
-          : click(a, a.target = '_blank')
+        !opts.cors 
+          ? download(blob, name, opts) 
+          : corsEnabled(a.href)
+            ? download(blob, name, opts)
+            : click(a, a.target = '_blank') 
+          
       } else {
         click(a)
       }
@@ -113,7 +120,7 @@ var saveAs = _global.saveAs || (
     name = name || blob.name || 'download'
 
     if (typeof blob === 'string') {
-      if (corsEnabled(blob)) {
+      if (opts.cors && corsEnabled(blob)) {
         download(blob, name, opts)
       } else {
         var a = document.createElement('a')
