@@ -10,7 +10,7 @@
     factory();
     global.FileSaver = mod.exports;
   }
-})(this, function () {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
   /*
@@ -28,13 +28,16 @@
 
   function bom(blob, opts) {
     if (typeof opts === 'undefined') opts = {
-      autoBom: false
+      autoBom: false,
+      cors: true
     };else if (typeof opts !== 'object') {
       console.warn('Deprecated: Expected third argument to be a object');
       opts = {
         autoBom: !opts
       };
-    } // prepend BOM for UTF-8 XML and text/* types (including HTML)
+    }
+    if (typeof opts.autoBom === 'undefined') opts.autoBom = false;
+    if (typeof opts.cors === 'undefined') opts.cors = true; // prepend BOM for UTF-8 XML and text/* types (including HTML)
     // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
 
     if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
@@ -88,11 +91,11 @@
   // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
 
 
-  var isMacOSWebView = /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
+  var isMacOSWebView = _global.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
   var saveAs = _global.saveAs || ( // probably in some web worker
-  typeof window !== 'object' || window !== _global ? function saveAs() {}
-  /* noop */
-  // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
+  typeof window !== 'object' || window !== _global ? function saveAs() {
+    /* noop */
+  } // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
   : 'download' in HTMLAnchorElement.prototype && !isMacOSWebView ? function saveAs(blob, name, opts) {
     var URL = _global.URL || _global.webkitURL;
     var a = document.createElement('a');
@@ -107,7 +110,7 @@
       a.href = blob;
 
       if (a.origin !== location.origin) {
-        corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
+        opts && !opts.cors ? download(blob, name, opts) : corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
       } else {
         click(a);
       }
@@ -127,7 +130,7 @@
     name = name || blob.name || 'download';
 
     if (typeof blob === 'string') {
-      if (corsEnabled(blob)) {
+      if (opts && !opts.cors && corsEnabled(blob)) {
         download(blob, name, opts);
       } else {
         var a = document.createElement('a');

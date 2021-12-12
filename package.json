@@ -1,6 +1,6 @@
 {
   "name": "save-files",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An HTML5 saveAs() FileSaver implementation",
   "main": "dist/FileSaver.min.js",
   "files": [
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eligrey/FileSaver.js"
+    "url": "https://github.com/AgusVelez5/FileSaver.js"
   },
   "keywords": [
     "filesaver",
@@ -28,9 +28,9 @@
   "author": "Eli Grey <me@eligrey.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/eligrey/FileSaver.js/issues"
+    "url": "https://github.com/AgusVelez5/FileSaver.js/issues"
   },
-  "homepage": "https://github.com/eligrey/FileSaver.js#readme",
+  "homepage": "https://github.com/AgusVelez5/FileSaver.js#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
