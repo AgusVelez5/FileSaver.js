@@ -97,7 +97,7 @@ var saveAs = _global.saveAs || (
       // Support regular links
       a.href = blob
       if (a.origin !== location.origin) {
-        !opts.cors 
+        (opts && !opts.cors)
           ? download(blob, name, opts) 
           : corsEnabled(a.href)
             ? download(blob, name, opts)
@@ -120,7 +120,7 @@ var saveAs = _global.saveAs || (
     name = name || blob.name || 'download'
 
     if (typeof blob === 'string') {
-      if (opts.cors && corsEnabled(blob)) {
+      if ((opts && !opts.cors) && corsEnabled(blob)) {
         download(blob, name, opts)
       } else {
         var a = document.createElement('a')

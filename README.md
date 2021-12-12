@@ -1,3 +1,5 @@
+__Fork from this [repo](https://github.com/eligrey/FileSaver.js)__
+
 If you need to save really large files bigger than the blob's size limitation or don't have
 enough RAM, then have a look at the more advanced [StreamSaver.js][7]
 that can save data directly to the hard drive asynchronously with the power of the new streams API. That will have
@@ -138,13 +140,5 @@ Installation
 
 ```bash
 # Basic Node.JS installation
-npm install file-saver --save
-bower install file-saver
-```
-
-Additionally, TypeScript definitions can be installed via:
-
-```bash
-# Additional typescript definitions
-npm install @types/file-saver --save-dev
+npm install save-files --save
 ```
