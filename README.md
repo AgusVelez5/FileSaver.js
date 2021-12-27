@@ -56,9 +56,9 @@ saveAs must be run within a user interaction event such as onTouchDown or onClic
 
 Syntax
 ------
-### Import `saveAs()` from file-saver
+### Import `saveAs()` from save-files
 ```js
-import { saveAs } from 'file-saver';
+import { saveAs } from 'save-files';
 ```
 
 ```js
@@ -72,7 +72,7 @@ Examples
 
 ### Saving text using `require()`
 ```js
-var FileSaver = require('file-saver');
+var FileSaver = require('save-files');
 var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
 FileSaver.saveAs(blob, "hello world.txt");
 ```
@@ -96,6 +96,12 @@ If not, it will try to download it using `a[download]`.
 
 The standard W3C File API [`Blob`][4] interface is not available in all browsers.
 [Blob.js][5] is a cross-browser `Blob` implementation that solves this.
+
+#### Saving URLs without checking cors
+
+```js
+FileSaver.saveAs("https://httpbin.org/image", "image.jpg", { autoBom: false, cors: false });
+```
 
 ### Saving a canvas
 ```js
